@@ -1,6 +1,8 @@
 # %%
+import numpy as np
 import polars as pl
 from plotnine import *
+
 
 git_pushes = pl.read_csv("../data/github/git_pushes.csv")
 git_pushes
@@ -8,12 +10,9 @@ git_pushes
 # %%
 git_pushes.describe()
 
-
 # %%
-# First get your original sorted DataFrame
 df = (
-    git_pushes.filter(pl.col("year") == 2024)
-    .group_by("iso2_code")
+    git_pushes.group_by("iso2_code")
     .agg(pl.sum("git_pushes"))
     .with_columns(
         percentage=pl.col("git_pushes") / pl.sum("git_pushes"),
@@ -24,15 +23,13 @@ df = (
     .sort("git_pushes", descending=True)
 )
 
-# Get the top 5 rows
-top5 = df.head(5)
+# Focus on top 5 countries and squash rest into Others
+top5 = df.head(10)
 
-# Get all other rows, sum them, and create a single "Others" row
-others = df.slice(5).select(
+others = df.slice(10).select(
     pl.lit("Others").alias("iso2_code"), pl.sum("git_pushes").alias("git_pushes")
 )
 
-# Calculate the percentage and blocks for the "Others" row
 others = others.with_columns(
     percentage=pl.col("git_pushes") / df["git_pushes"].sum(),
     blocks=(pl.col("git_pushes") / df["git_pushes"].sum() * 100).round().cast(pl.Int32),
@@ -41,4 +38,32 @@ others = others.with_columns(
 # Combine the top 5 with the "Others" row
 result = pl.concat([top5, others])
 
+result
+
+# %%
+result[10, "blocks"] += 1
+
+# %%
+x = 10
+y = 10
+
+Xlin = np.linspace(0, 5, x)
+Ylin = np.linspace(0, 5, y)
+X, Y = np.meshgrid(Xlin, Ylin)
+
+
+status = []
+for country, blocks in result.select("iso2_code", "blocks").iter_rows():
+    status += blocks * [country]
+
+df = pl.DataFrame({"x": X.flatten(), "y": Y.flatten(), "Status": status})
+
+p = ggplot(df, aes(x="x", y="y")) + geom_tile(
+    aes(fill="Status"), width=0.8, height=0.8, color="white", size=0.5
+)
+
+p
+
+# %%
+df
 # %%
