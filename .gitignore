@@ -1,5 +1,5 @@
 .envrc
 .python-version
 .DS_Store
-data/*
+data/complaints.csv
 
