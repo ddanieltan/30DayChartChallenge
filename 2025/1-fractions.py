@@ -38,10 +38,10 @@ others = others.with_columns(
 # Combine the top 5 with the "Others" row
 result = pl.concat([top5, others])
 
+# Manual workaround rounding not equal to total of 100
+result[10, "blocks"] += 1
 result
 
-# %%
-result[10, "blocks"] += 1
 
 # %%
 x = 10
@@ -62,7 +62,7 @@ p = ggplot(df, aes(x="x", y="y")) + geom_tile(
     aes(fill="Status"), width=0.8, height=0.8, color="white", size=0.5
 )
 
-p
+p.show()
 
 # %%
 df
