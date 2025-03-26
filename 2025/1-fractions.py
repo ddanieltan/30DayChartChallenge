@@ -25,13 +25,12 @@ df = df.with_columns(
 )
 
 
-# AI! update the shades of green to make it more distinct between classes
 fig = plt.figure(
     FigureClass=Waffle,
     rows=5,
     columns=20,  # Either rows or columns could be omitted
     values=df.select("blocks").to_series(),  # Pass a list of integers to values
-    colors=["#004d00", "#006600", "#008000", "#009900", "#00b300", "#00cc00"],
+    colors=["#003300", "#006633", "#009933", "#66CC33", "#99FF99", "#CCFFCC"],
 )
 
 
