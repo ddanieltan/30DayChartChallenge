@@ -38,8 +38,7 @@ fig = plt.figure(
     colors=["#004d00", "#00b300", "#419873", "#008000", "#52bf90", "#808080"],
 )
 
-# add text that says "HTML" ai!
-plt.text(-5, 60, "Parabola $Y = x^2$", fontsize=10)
+plt.text(-5, 60, "HTML", fontsize=10)
 
 fig.show()
 
