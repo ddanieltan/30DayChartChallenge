@@ -30,12 +30,17 @@ fig = plt.figure(
     rows=5,
     columns=20,  # Either rows or columns could be omitted
     values=df.select("blocks").to_series(),  # Pass a list of integers to values
-    colors=["#003300", "#006633", "#009933", "#66CC33", "#99FF99", "#CCFFCC"],
+    title={
+        "label": "Top git pushes to Github by Programming Language",
+        "loc": "left",
+        "fontdict": {"fontsize": 15},
+    },
+    colors=["#004d00", "#00b300", "#419873", "#008000", "#52bf90", "#808080"],
 )
 
+# add text that says "HTML" ai!
+plt.text(-5, 60, "Parabola $Y = x^2$", fontsize=10)
 
-# fig.savefig("plot.png", bbox_inches="tight")
 fig.show()
-# %%
-df.select("language").to_series().to_list()
+
 # %%
