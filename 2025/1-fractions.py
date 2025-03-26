@@ -4,7 +4,7 @@ import polars as pl
 from pywaffle import Waffle
 import matplotlib.pyplot as plt
 
-git_lang = pl.read_csv("../data/github/languages.csv")
+git_lang = pl.read_csv("./data/github/languages.csv")
 gl = (
     git_lang.filter(pl.col("iso2_code") == "SG")
     .group_by("language")
@@ -25,6 +25,7 @@ df = df.with_columns(
 )
 
 
+# AI! update the shades of green to make it more distinct between classes
 fig = plt.figure(
     FigureClass=Waffle,
     rows=5,
@@ -35,7 +36,7 @@ fig = plt.figure(
 
 
 # fig.savefig("plot.png", bbox_inches="tight")
-fig
+fig.show()
 # %%
 df.select("language").to_series().to_list()
 # %%
