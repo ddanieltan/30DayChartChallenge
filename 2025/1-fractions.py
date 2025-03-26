@@ -25,13 +25,12 @@ df = df.with_columns(
 )
 
 
-# AI! use different shades of green as the fill color
 fig = plt.figure(
     FigureClass=Waffle,
     rows=5,
     columns=20,  # Either rows or columns could be omitted
     values=df.select("blocks").to_series(),  # Pass a list of integers to values
-    cmap_name="tab10",
+    colors=["#004d00", "#006600", "#008000", "#009900", "#00b300", "#00cc00"],
 )
 
 
