@@ -11,6 +11,7 @@ dependencies = [
     "plotnine>=0.14.5",
     "polars>=1.25.2",
     "pyarrow>=19.0.1",
+    "pywaffle>=1.1.1",
 ]
 
 [tool.ruff]

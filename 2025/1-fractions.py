@@ -3,7 +3,9 @@ import numpy as np
 import polars as pl
 from pywaffle import Waffle
 import matplotlib.pyplot as plt
+from plotnine import *
 
+# %%
 git_lang = pl.read_csv("./data/github/languages.csv")
 gl = (
     git_lang.filter(pl.col("iso2_code") == "SG")
@@ -38,8 +40,31 @@ fig = plt.figure(
     colors=["#004d00", "#00b300", "#419873", "#008000", "#52bf90", "#808080"],
 )
 
-plt.text(-5, 60, "HTML", fontsize=10)
-
 fig.show()
 
 # %%
+git_pushes = pl.read_csv("./data/github/git_pushes.csv")
+(
+    git_pushes.group_by("iso2_code")
+    .agg(pl.sum("git_pushes"))
+    .filter(pl.col("iso2_code").is_in(["US", "SG"]))
+)
+x = 10
+y = 10
+
+Xlin = np.linspace(0, 5, x)
+Ylin = np.linspace(0, 5, y)
+X, Y = np.meshgrid(Xlin, Ylin)
+
+
+status = []
+for country, blocks in result.select("iso2_code", "blocks").iter_rows():
+    status += blocks * [country]
+
+df = pl.DataFrame({"x": X.flatten(), "y": Y.flatten(), "Status": status})
+
+p = ggplot(df, aes(x="x", y="y")) + geom_tile(
+    aes(fill="Status"), width=0.8, height=0.8, color="white", size=0.5
+)
+
+p.show()
